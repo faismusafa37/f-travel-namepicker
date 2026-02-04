@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTravel Win & Go</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-actions">
+                <button id="fullscreenBtn" class="nav-icon-btn" title="Toggle Fullscreen">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                        <path
+                            d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                    </svg>
+                </button>
+                <button id="minimizeNavbarBtn" class="nav-icon-btn" title="Minimize Navbar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M18 15l-6-6-6 6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <button id="expandNavbarBtn" class="expand-nav-btn hidden" title="Expand Navbar">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M6 9l6 6 6-6" />
+        </svg>
+    </button>
+
+    <main class="main-content">
+        <section class="picker-container" id="mainLayout">
+            <div class="controls-card" id="settingsCard">
+                <button id="toggleSettings" class="toggle-btn" title="Toggle Sidebar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5"
+                        fill="none">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
+                <div class="settings-content">
+                    <h1>F Travel</h1>
+                    <p class="subtitle">Assign names and configure the drawing parameters below for a fair random
+                        selection.</p>
+
+                    <div class="input-group">
+                        <label for="nameList">Entry Pool</label>
+                        <textarea id="nameList"
+                            placeholder="Paste names separated by line...&#10;Alice&#10;Bob&#10;Charlie"></textarea>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="input-group">
+                            <label for="pickCount">Winner Count</label>
+                            <input type="number" id="pickCount" value="1" min="1">
+                        </div>
+                    </div>
+
+                    <button id="shuffleBtn" class="primary-btn">Initialize Shuffle</button>
+                </div>
+            </div>
+
+            <div class="display-card">
+                <div id="shuffleDisplay" class="shuffle-box">
+                    <!-- Replacement: Replace 'logo.png' with your actual logo path -->
+                    <img id="mainLogo" class="main-logo" src="img/flogo.png" alt="Company Logo"
+                        onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+                    <div id="logoFallback" class="logo-fallback" style="display:none;">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
+                        </svg>
+                        <span>YOUR LOGO HERE</span>
+                    </div>
+
+                    <div id="diceContainer" class="dice-container hidden">
+                        <div class="dice">
+                            <div class="face front">?</div>
+                            <div class="face back">?</div>
+                            <div class="face right">?</div>
+                            <div class="face left">?</div>
+                            <div class="face top">?</div>
+                            <div class="face bottom">?</div>
+                        </div>
+                    </div>
+
+                    <div id="resultOverlay" class="result-overlay hidden">
+                        <div class="result-content">
+                            <h2 class="congrats">CONGRATULATIONS!</h2>
+                            <div id="finalWinners" class="final-winners"></div>
+                            <button id="resetBtn" class="reset-btn">Reset Picker</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

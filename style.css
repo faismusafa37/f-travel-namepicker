@@ -1,0 +1,696 @@
+:root {
+    --primary: #6366f1;
+    --primary-bright: #818cf8;
+    --secondary: #ec4899;
+    --accent: #06b6d4;
+    --bg-dark: #020617;
+    --mesh-1: #1e1b4b;
+    --mesh-2: #312e81;
+    --mesh-3: #1e293b;
+    --card-bg: rgba(15, 23, 42, 0.4);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --inner-glow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+    --text-white: #ffffff;
+    --text-dim: #94a3b8;
+    --font-main: 'Outfit', system-ui, sans-serif;
+    --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Mesh Background Layers */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 0% 0%, var(--mesh-1) 0%, transparent 50%),
+        radial-gradient(circle at 100% 0%, var(--mesh-2) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, var(--mesh-3) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, #171717 0%, transparent 50%);
+    z-index: -1;
+    filter: blur(80px);
+}
+
+/* Navbar Enhancement */
+.navbar {
+    background: rgba(2, 6, 23, 0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 1.25rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 140px;
+    /* Base height for logo */
+    display: flex;
+    align-items: center;
+}
+
+.navbar.minimized {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.nav-icon-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-icon-btn:hover {
+    background: var(--card-bg);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.expand-nav-btn {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-top: none;
+    color: var(--text-dim);
+    padding: 8px 30px;
+    border-radius: 0 0 15px 15px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.expand-nav-btn:hover {
+    color: white;
+    padding-bottom: 12px;
+    border-color: var(--primary);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-image {
+    height: 100px;
+    /* Adjusted from 120px to prevent overlapping */
+    width: auto;
+    display: block;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+}
+
+
+.nav-link-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-bright));
+    color: white;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.nav-link-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+}
+
+/* Main Layout Enhancement */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+}
+
+.picker-container {
+    display: flex;
+    gap: 2.5rem;
+    max-width: 1400px;
+    width: 100%;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.controls-card {
+    width: 420px;
+    flex-shrink: 0;
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 32px;
+    padding: 2.5rem;
+    backdrop-filter: blur(24px);
+    box-shadow: var(--shadow-premium), var(--inner-glow);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.controls-card.collapsed {
+    width: 80px;
+    padding: 2.5rem 1rem;
+    background: rgba(15, 23, 42, 0.2);
+}
+
+.controls-card.collapsed .settings-content {
+    opacity: 0;
+    transform: translateX(-40px);
+    pointer-events: none;
+}
+
+.settings-content {
+    transition: all 0.4s ease;
+}
+
+.toggle-btn {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    cursor: pointer;
+    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.controls-card.collapsed .toggle-btn {
+    right: 20px;
+    transform: rotate(180deg);
+}
+
+.display-card {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 32px;
+    padding: 1.5rem;
+    backdrop-filter: blur(24px);
+    box-shadow: var(--shadow-premium), var(--inner-glow);
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Typography Overhaul */
+h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    color: var(--text-dim);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+/* Form Elements Enhancement */
+.input-group label {
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--primary-bright);
+    margin-bottom: 0.75rem;
+}
+
+textarea {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 1.25rem;
+    color: white;
+    min-height: 200px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+input[type="number"] {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    color: white;
+    font-weight: 600;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-bright));
+    color: white;
+    border: none;
+    padding: 1.25rem;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 2rem;
+}
+
+.primary-btn:hover {
+    transform: scale(1.02) translateY(-4px);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+}
+
+/* Dice Animation Area */
+.shuffle-box {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+.main-logo {
+    max-width: 250px;
+    max-height: 250px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+}
+
+.logo-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-dim);
+    opacity: 0.3;
+    transition: all 0.5s ease;
+}
+
+.logo-fallback svg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.logo-fallback span {
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    font-weight: 700;
+}
+
+.main-logo.hidden,
+.logo-fallback.hidden {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+    pointer-events: none;
+}
+
+.dice-container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.dice {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.1s;
+}
+
+.face {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+}
+
+.front {
+    transform: rotateY(0deg) translateZ(100px);
+}
+
+.back {
+    transform: rotateY(180deg) translateZ(100px);
+}
+
+.right {
+    transform: rotateY(90deg) translateZ(100px);
+}
+
+.left {
+    transform: rotateY(-90deg) translateZ(100px);
+}
+
+.top {
+    transform: rotateX(90deg) translateZ(100px);
+}
+
+.bottom {
+    transform: rotateX(-90deg) translateZ(100px);
+}
+
+/* Shaking Animation */
+@keyframes shakeDice {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(0, 0);
+    }
+
+    10% {
+        transform: rotateX(45deg) rotateY(90deg) rotateZ(45deg) translate(10px, -10px);
+    }
+
+    30% {
+        transform: rotateX(135deg) rotateY(180deg) rotateZ(135deg) translate(-15px, 15px);
+    }
+
+    50% {
+        transform: rotateX(225deg) rotateY(270deg) rotateZ(225deg) translate(20px, -20px);
+    }
+
+    70% {
+        transform: rotateX(315deg) rotateY(360deg) rotateZ(315deg) translate(-10px, 10px);
+    }
+
+    90% {
+        transform: rotateX(405deg) rotateY(450deg) rotateZ(405deg) translate(15px, -15px);
+    }
+
+    100% {
+        transform: rotateX(450deg) rotateY(540deg) rotateZ(450deg) translate(0, 0);
+    }
+}
+
+.dice.shaking {
+    animation: shakeDice 0.2s infinite linear;
+}
+
+/* Result Overlay & Adaptive Grid */
+.result-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 6, 23, 0.95);
+    backdrop-filter: blur(30px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.result-overlay.hidden {
+    display: none;
+}
+
+.result-content {
+    width: 90%;
+    max-width: 1200px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 90%;
+}
+
+.congrats {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--primary-bright);
+    letter-spacing: 8px;
+    margin-bottom: 2rem;
+    font-weight: 800;
+}
+
+.final-winners {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 2rem;
+}
+
+.final-winner-card {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 800;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: winnerReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+    transition: all 0.4s ease;
+    min-height: 120px;
+}
+
+.final-winner-card:hover {
+    transform: scale(1.02) translateY(-5px);
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+}
+
+.redraw-card-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    backdrop-filter: blur(5px);
+}
+
+.final-winner-card:hover .redraw-card-btn {
+    opacity: 1;
+}
+
+.redraw-card-btn:hover {
+    background: var(--secondary);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Replacement Animations */
+.final-winner-card.replacing {
+    filter: blur(10px) brightness(1.5);
+    transform: scale(0.9);
+    opacity: 0.5;
+}
+
+.final-winner-card.new-reveal {
+    animation: flashReveal 0.8s ease-out forwards;
+}
+
+@keyframes flashReveal {
+    0% {
+        filter: brightness(3);
+        transform: scale(1.1);
+    }
+
+    100% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+}
+
+.reset-btn {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border-color: white;
+}
+
+.placeholder-text {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    opacity: 0.5;
+}
+
+.placeholder-text.hidden {
+    display: none;
+}
+
+/* Cleanup removed airplane styles */
+.airplane,
+.banner,
+.shuffling-name {
+    display: none !important;
+}
+
+/* Winners Grid Overhaul */
+.winners-list {
+    margin-top: 2rem;
+    padding: 1rem;
+    animation: fadeIn 0.8s ease;
+}
+
+.winners-list h3 {
+    text-align: center;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.winners-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.winner-tag {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: winnerReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform: scale(0);
+}
+
+@keyframes winnerReveal {
+    0% {
+        transform: scale(0) rotate(-10deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1000px) {
+    .picker-container {
+        flex-direction: column;
+    }
+
+    .controls-card {
+        width: 100% !important;
+    }
+}

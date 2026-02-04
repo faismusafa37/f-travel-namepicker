@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const shuffleDisplay = document.getElementById('shuffleDisplay');
     const diceContainer = document.getElementById('diceContainer');
     const dice = diceContainer ? diceContainer.querySelector('.dice') : null;
-    const mainLogo = document.getElementById('mainLogo');
-    const logoFallback = document.getElementById('logoFallback');
+    const initialScreen = document.getElementById('initialScreen');
     const resultOverlay = document.getElementById('resultOverlay');
     const finalWinners = document.getElementById('finalWinners');
     const resetBtn = document.getElementById('resetBtn');
@@ -16,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const minimizeNavbarBtn = document.getElementById('minimizeNavbarBtn');
     const expandNavbarBtn = document.getElementById('expandNavbarBtn');
     const navbar = document.querySelector('.navbar');
+    const reshuffleBtn = document.getElementById('reshuffleBtn');
 
     let isShuffling = false;
     let poolNames = []; // Persistent pool across redraws/shuffles
@@ -40,6 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
     expandNavbarBtn.addEventListener('click', () => {
         navbar.classList.remove('minimized');
         expandNavbarBtn.classList.add('hidden');
+    });
+
+    reshuffleBtn.addEventListener('click', () => {
+        const pickCount = parseInt(pickCountInput.value);
+        if (poolNames.length < pickCount) {
+            alert(`Not enough names left in the pool to pick ${pickCount} more winners!`);
+            return;
+        }
+
+        resultOverlay.classList.add('hidden');
+        startDiceShake(poolNames, pickCount);
     });
 
     toggleSettings.addEventListener('click', () => {
@@ -87,8 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.addEventListener('click', () => {
         resultOverlay.classList.add('hidden');
         diceContainer.classList.add('hidden');
-        mainLogo.classList.remove('hidden');
-        logoFallback.classList.remove('hidden');
+        initialScreen.classList.remove('hidden');
         shuffleBtn.disabled = false;
     });
 
@@ -97,8 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shuffleBtn.disabled = true;
 
         // Step 1: Hide Branding
-        mainLogo.classList.add('hidden');
-        logoFallback.classList.add('hidden');
+        initialScreen.classList.add('hidden');
         resultOverlay.classList.add('hidden');
 
         // Step 2: Show Dice & Start Shake
@@ -145,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showResults(winners) {
         finalWinners.innerHTML = '';
+        finalWinners.classList.remove('high-count');
         const count = winners.length;
 
         // Define dynamic styles based on count
@@ -160,11 +170,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (count <= 9) {
             fontSize = 'clamp(1.2rem, 3vw, 2rem)';
             padding = '1.5rem';
-            gridCols = 'repeat(3, 1fr)';
+        } else if (count <= 12) {
+            fontSize = 'clamp(1rem, 2.5vw, 1.5rem)';
+            padding = '1rem 1.5rem';
+            gridCols = 'repeat(4, 1fr)';
+        } else if (count <= 20) {
+            fontSize = 'clamp(0.8rem, 2vw, 1.2rem)';
+            padding = '0.8rem 1rem';
+            gridCols = 'repeat(5, 1fr)';
+            finalWinners.classList.add('high-count');
         } else {
-            fontSize = 'clamp(1rem, 2vw, 1.5rem)';
-            padding = '1rem';
-            gridCols = 'repeat(auto-fit, minmax(150px, 1fr))';
+            fontSize = 'clamp(0.7rem, 1.5vw, 1rem)';
+            padding = '0.6rem 0.8rem';
+            gridCols = 'repeat(auto-fit, minmax(130px, 1fr))';
+            finalWinners.classList.add('high-count');
         }
 
         finalWinners.style.gridTemplateColumns = gridCols;

@@ -68,15 +68,8 @@
 
             <div class="display-card">
                 <div id="shuffleDisplay" class="shuffle-box">
-                    <!-- Replacement: Replace 'logo.png' with your actual logo path -->
-                    <img id="mainLogo" class="main-logo" src="img/flogo.png" alt="Company Logo"
-                        onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
-                    <div id="logoFallback" class="logo-fallback" style="display:none;">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
-                        </svg>
-                        <span>YOUR LOGO HERE</span>
+                    <div id="initialScreen" class="initial-screen">
+                        <h1 class="time-to-win">Time to Win</h1>
                     </div>
 
                     <div id="diceContainer" class="dice-container hidden">
@@ -94,7 +87,10 @@
                         <div class="result-content">
                             <h2 class="congrats">CONGRATULATIONS!</h2>
                             <div id="finalWinners" class="final-winners"></div>
-                            <button id="resetBtn" class="reset-btn">Reset Picker</button>
+                            <div class="result-actions">
+                                <button id="reshuffleBtn" class="primary-btn">Shuffle Again</button>
+                                <button id="resetBtn" class="reset-btn">Reset Picker</button>
+                            </div>
                         </div>
                     </div>
                 </div>

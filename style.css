@@ -194,11 +194,14 @@ body::before {
     box-shadow: var(--shadow-premium), var(--inner-glow);
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
+    height: 100%;
 }
 
 .controls-card.collapsed {
     width: 80px;
-    padding: 2.5rem 1rem;
+    height: 100px;
+    /* Sharp fixed height for compact feel */
+    padding: 1.5rem 1rem;
     background: rgba(15, 23, 42, 0.2);
 }
 
@@ -237,6 +240,8 @@ body::before {
 
 .controls-card.collapsed .toggle-btn {
     right: 20px;
+    top: 30px;
+    /* Keep consistent or center if needed */
     transform: rotate(180deg);
 }
 
@@ -250,8 +255,12 @@ body::before {
     box-shadow: var(--shadow-premium), var(--inner-glow);
     display: flex;
     flex-direction: column;
-    min-height: 600px;
+    height: 600px;
+    /* Fixed height to prevent stretching */
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    /* Contain the overlay */
 }
 
 /* Typography Overhaul */
@@ -336,38 +345,44 @@ input[type="number"] {
     perspective: 1000px;
 }
 
-.main-logo {
-    max-width: 250px;
-    max-height: 250px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+.main-logo,
+.logo-fallback {
+    display: none;
+}
+
+.initial-screen {
+    text-align: center;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 5;
 }
 
-.logo-fallback {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--text-dim);
-    opacity: 0.3;
-    transition: all 0.5s ease;
+.time-to-win {
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 800;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    line-height: 1;
+    animation: floatPulse 3s ease-in-out infinite;
 }
 
-.logo-fallback svg {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
+@keyframes floatPulse {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    50% {
+        transform: translateY(-10px) scale(1.02);
+        text-shadow: 0 20px 40px rgba(32, 42, 249, 0.4);
+    }
 }
 
-.logo-fallback span {
-    font-size: 0.8rem;
-    letter-spacing: 4px;
-    font-weight: 700;
-}
-
-.main-logo.hidden,
-.logo-fallback.hidden {
+.initial-screen.hidden {
     opacity: 0;
     transform: scale(0.8) translateY(-20px);
     pointer-events: none;
@@ -392,7 +407,8 @@ input[type="number"] {
     position: absolute;
     width: 200px;
     height: 200px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, #202af9, #f85009);
+    /* Specific Brand Blue and Orange */
     border: 2px solid white;
     display: flex;
     justify-content: center;
@@ -473,12 +489,13 @@ input[type="number"] {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(2, 6, 23, 0.95);
-    backdrop-filter: blur(30px);
+    background: rgba(2, 6, 23, 0.98);
+    backdrop-filter: blur(40px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 1000;
+    padding: 1.5rem;
 }
 
 .hidden {
@@ -490,13 +507,13 @@ input[type="number"] {
 }
 
 .result-content {
-    width: 90%;
-    max-width: 1200px;
-    text-align: center;
+    width: 100%;
+    max-width: 1000px;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    max-height: 90%;
 }
 
 .congrats {
@@ -509,16 +526,44 @@ input[type="number"] {
 
 .final-winners {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
     width: 100%;
+    flex: 1;
     overflow-y: auto;
-    padding: 10px;
+    padding: 20px 10px;
     margin-bottom: 2rem;
+    align-content: center;
+}
+
+.final-winners.high-count {
+    gap: 0.75rem;
+    padding: 10px 5px;
+}
+
+.final-winners.high-count .final-winner-card {
+    min-height: 60px;
+    border-radius: 12px;
+}
+
+.final-winners.high-count .redraw-card-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+}
+
+.final-winners::-webkit-scrollbar {
+    width: 6px;
+}
+
+.final-winners::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
 }
 
 .final-winner-card {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, #202af9, #f85009);
+    /* Specific Brand Blue and Orange */
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     display: flex;
@@ -530,7 +575,7 @@ input[type="number"] {
     position: relative;
     animation: winnerReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
     transition: all 0.4s ease;
-    min-height: 120px;
+    min-height: 100px;
 }
 
 .final-winner-card:hover {
@@ -590,21 +635,39 @@ input[type="number"] {
     }
 }
 
+.result-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.result-actions .primary-btn {
+    margin-top: 0;
+    /* Override default margin */
+    padding: 1rem 3rem;
+}
+
 .reset-btn {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--card-border);
     color: var(--text-dim);
-    padding: 0.75rem 1.5rem;
-    border-radius: 12px;
+    padding: 1rem 2.5rem;
+    border-radius: 15px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     transition: all 0.3s ease;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .reset-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--primary);
     color: white;
-    border-color: white;
+    border-color: var(--primary-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
 }
 
 .placeholder-text {

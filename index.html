@@ -14,26 +14,17 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-actions">
-                <button id="fullscreenBtn" class="nav-icon-btn" title="Toggle Fullscreen">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-                        <path
-                            d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-                    </svg>
-                </button>
-                <button id="minimizeNavbarBtn" class="nav-icon-btn" title="Minimize Navbar">
-                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-                        <path d="M18 15l-6-6-6 6" />
-                    </svg>
-                </button>
+            <div class="nav-logo">
+                <img src="img/white1.png" alt="F-Travel Logo" class="navbar-logo-img">
             </div>
+            <button class="nav-icon-btn fullscreen-toggle" title="Toggle Fullscreen">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                    <path
+                        d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                </svg>
+            </button>
         </div>
     </nav>
-    <button id="expandNavbarBtn" class="expand-nav-btn hidden" title="Expand Navbar">
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-            <path d="M6 9l6 6 6-6" />
-        </svg>
-    </button>
 
     <main class="main-content">
         <section class="picker-container" id="mainLayout">
@@ -62,7 +53,7 @@
                         </div>
                     </div>
 
-                    <button id="shuffleBtn" class="primary-btn">Initialize Shuffle</button>
+                    <!-- <button id="shuffleBtn" class="primary-btn">Initialize Shuffle</button> -->
                 </div>
             </div>
 
@@ -133,6 +124,8 @@
                         </div>
                     </div>
                 </div>
+                <button id="fullscreenShuffleBtn" class="fullscreen-shuffle-btn" title="Start Drawing">Shuffle
+                    Now</button>
             </div>
         </section>
     </main>

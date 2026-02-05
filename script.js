@@ -11,11 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('resetBtn');
     const settingsCard = document.getElementById('settingsCard');
     const toggleSettings = document.getElementById('toggleSettings');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
-    const minimizeNavbarBtn = document.getElementById('minimizeNavbarBtn');
-    const expandNavbarBtn = document.getElementById('expandNavbarBtn');
+    const fullscreenToggles = document.querySelectorAll('.fullscreen-toggle');
     const navbar = document.querySelector('.navbar');
     const reshuffleBtn = document.getElementById('reshuffleBtn');
+    const fullscreenShuffleBtn = document.getElementById('fullscreenShuffleBtn');
 
     // --- Sound System ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -69,44 +68,29 @@ document.addEventListener('DOMContentLoaded', () => {
     let isShuffling = false;
     let poolNames = []; // Persistent pool across redraws/shuffles
 
-    // Fullscreen Toggle
-    fullscreenBtn.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-            });
+    // Fullscreen Toggles
+    fullscreenToggles.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    });
+
+    // Handle Fullscreen Exit (via ESC key or browser button)
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+            document.body.classList.add('fullscreen-active');
         } else {
-            document.exitFullscreen();
+            document.body.classList.remove('fullscreen-active');
         }
     });
 
-    // Navbar Minimize Toggle
-    minimizeNavbarBtn.addEventListener('click', () => {
-        navbar.classList.add('minimized');
-        expandNavbarBtn.classList.remove('hidden');
-    });
-
-    expandNavbarBtn.addEventListener('click', () => {
-        navbar.classList.remove('minimized');
-        expandNavbarBtn.classList.add('hidden');
-    });
-
-    reshuffleBtn.addEventListener('click', () => {
-        const pickCount = parseInt(pickCountInput.value);
-        if (poolNames.length < pickCount) {
-            alert(`Not enough names left in the pool to pick ${pickCount} more winners!`);
-            return;
-        }
-
-        resultOverlay.classList.add('hidden');
-        startDiceShake(poolNames, pickCount);
-    });
-
-    toggleSettings.addEventListener('click', () => {
-        settingsCard.classList.toggle('collapsed');
-    });
-
-    shuffleBtn.addEventListener('click', () => {
+    const initiateShuffle = () => {
         if (isShuffling) return;
 
         const names = nameListInput.value
@@ -131,33 +115,53 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        settingsCard.classList.add('collapsed');
+        if (settingsCard) settingsCard.classList.add('collapsed');
 
         // Initialize or update pool from textarea
-        const freshNames = nameListInput.value
-            .split(/[\n,]+/)
-            .map(n => n.trim())
-            .filter(n => n.length > 0);
-
-        poolNames = freshNames;
+        poolNames = names;
 
         setTimeout(() => startDiceShake(poolNames, pickCount), 400);
+    };
+
+    fullscreenShuffleBtn?.addEventListener('click', () => {
+        initiateShuffle();
     });
 
-    resetBtn.addEventListener('click', () => {
+    reshuffleBtn.addEventListener('click', () => {
+        const pickCount = parseInt(pickCountInput.value);
+        if (poolNames.length < pickCount) {
+            alert(`Not enough names left in the pool to pick ${pickCount} more winners!`);
+            return;
+        }
+
         resultOverlay.classList.add('hidden');
-        diceContainer.classList.add('hidden');
-        initialScreen.classList.remove('hidden');
-        shuffleBtn.disabled = false;
+        startDiceShake(poolNames, pickCount);
+    });
+
+    toggleSettings.addEventListener('click', () => {
+        settingsCard.classList.toggle('collapsed');
+    });
+
+    shuffleBtn?.addEventListener('click', () => {
+        initiateShuffle();
+    });
+
+    resetBtn?.addEventListener('click', () => {
+        resultOverlay?.classList.add('hidden');
+        diceContainer?.classList.add('hidden');
+        initialScreen?.classList.remove('hidden');
+        fullscreenShuffleBtn?.classList.remove('hidden');
+        if (shuffleBtn) shuffleBtn.disabled = false;
     });
 
     function startDiceShake(names, pickCount) {
         isShuffling = true;
-        shuffleBtn.disabled = true;
+        if (shuffleBtn) shuffleBtn.disabled = true;
 
         // Step 1: Hide Branding
         initialScreen.classList.add('hidden');
         resultOverlay.classList.add('hidden');
+        fullscreenShuffleBtn.classList.add('hidden');
 
         const shuffleSound = playShuffleSound();
 

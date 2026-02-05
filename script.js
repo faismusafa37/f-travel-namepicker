@@ -17,6 +17,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar');
     const reshuffleBtn = document.getElementById('reshuffleBtn');
 
+    // --- Sound System ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    const playShuffleSound = () => {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+        }
+
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 800;
+
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = 0;
+
+        whiteNoise.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        whiteNoise.start();
+
+        // Modulate gain for "shaking" effect
+        let startTime = audioCtx.currentTime;
+        const interval = 0.1;
+        for (let i = 0; i < 30; i++) {
+            gainNode.gain.setValueAtTime(Math.random() * 0.15 + 0.05, startTime + i * interval);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + (i + 1) * interval - 0.02);
+        }
+
+        return {
+            stop: () => {
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
+                setTimeout(() => whiteNoise.stop(), 200);
+            }
+        };
+    };
+    // ----------------------
+
     let isShuffling = false;
     let poolNames = []; // Persistent pool across redraws/shuffles
 
@@ -110,6 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
         initialScreen.classList.add('hidden');
         resultOverlay.classList.add('hidden');
 
+        const shuffleSound = playShuffleSound();
+
         // Step 2: Show Dice & Start Shake
         setTimeout(() => {
             diceContainer.classList.remove('hidden');
@@ -132,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(flickerTimer);
                 dice.classList.remove('shaking');
                 isShuffling = false;
+
+                if (shuffleSound) shuffleSound.stop();
 
                 // Select winners and eliminate from pool
                 const winners = [];

@@ -664,21 +664,133 @@ input[type="number"] {
     text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     margin: 0;
     line-height: 1;
-    animation: scaleReveal 2s ease-in-out infinite alternate;
     z-index: 10;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 15vh;
 }
 
-@keyframes scaleReveal {
-    0% {
-        transform: scale(0);
+.solo-word {
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.5);
+    filter: blur(10px);
+}
+
+.word-1 {
+    animation: word1Fade 8s infinite;
+}
+
+.word-2 {
+    animation: word2Fade 8s infinite;
+}
+
+.word-3 {
+    animation: word3Fade 8s infinite;
+}
+
+.full-phrase {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(10px);
+    white-space: nowrap;
+    animation: fullLineFade 8s infinite;
+}
+
+@keyframes word1Fade {
+
+    0%,
+    2% {
         opacity: 0;
+        transform: scale(0.8);
+        filter: blur(5px);
+    }
+
+    5%,
+    12% {
+        opacity: 1;
+        transform: scale(1.1);
+        filter: blur(0);
+    }
+
+    15%,
+    100% {
+        opacity: 0;
+        transform: scale(1.3);
         filter: blur(10px);
+    }
+}
+
+@keyframes word2Fade {
+
+    0%,
+    15% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(5px);
+    }
+
+    18%,
+    27% {
+        opacity: 1;
+        transform: scale(1.1);
+        filter: blur(0);
+    }
+
+    30%,
+    100% {
+        opacity: 0;
+        transform: scale(1.3);
+        filter: blur(10px);
+    }
+}
+
+@keyframes word3Fade {
+
+    0%,
+    30% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(5px);
+    }
+
+    33%,
+    42% {
+        opacity: 1;
+        transform: scale(1.1);
+        filter: blur(0);
+    }
+
+    45%,
+    100% {
+        opacity: 0;
+        transform: scale(1.3);
+        filter: blur(10px);
+    }
+}
+
+@keyframes fullLineFade {
+
+    0%,
+    45% {
+        opacity: 0;
+        transform: scale(0.9);
+        filter: blur(5px);
+    }
+
+    50%,
+    95% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
     }
 
     100% {
-        transform: scale(1);
-        opacity: 1;
-        filter: blur(0);
+        opacity: 0;
+        transform: scale(1.05);
+        filter: blur(5px);
     }
 }
 

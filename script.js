@@ -87,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('fullscreen-active');
         } else {
             document.body.classList.remove('fullscreen-active');
+            // One-step simplify: exit fullscreen and open settings automatically
+            if (settingsCard) {
+                settingsCard.classList.remove('collapsed');
+            }
         }
     });
 
@@ -214,36 +218,39 @@ document.addEventListener('DOMContentLoaded', () => {
         finalWinners.classList.remove('high-count');
         const count = winners.length;
 
-        // Define dynamic styles based on count
-        let fontSize, padding, gridCols;
+        // Use Flexbox for better centering and natural wrapping
+        finalWinners.style.display = 'flex';
+        finalWinners.style.flexWrap = 'wrap';
+        finalWinners.style.justifyContent = 'center';
+
+        let cardWidth;
         if (count === 1) {
             fontSize = 'clamp(2.5rem, 10vw, 5rem)';
             padding = '3rem 5rem';
-            gridCols = '1fr';
+            cardWidth = '100%';
         } else if (count <= 4) {
             fontSize = 'clamp(1.5rem, 5vw, 3rem)';
             padding = '2rem';
-            gridCols = 'repeat(2, 1fr)';
+            cardWidth = 'calc(45% - 1rem)';
         } else if (count <= 9) {
             fontSize = 'clamp(1.2rem, 3vw, 2rem)';
             padding = '1.5rem';
+            cardWidth = 'calc(30% - 1rem)';
         } else if (count <= 12) {
             fontSize = 'clamp(1rem, 2.5vw, 1.5rem)';
             padding = '1rem 1.5rem';
-            gridCols = 'repeat(4, 1fr)';
+            cardWidth = 'calc(23% - 1rem)';
         } else if (count <= 20) {
             fontSize = 'clamp(0.8rem, 2vw, 1.2rem)';
             padding = '0.8rem 1rem';
-            gridCols = 'repeat(5, 1fr)';
+            cardWidth = 'calc(18% - 0.5rem)';
             finalWinners.classList.add('high-count');
         } else {
             fontSize = 'clamp(0.7rem, 1.5vw, 1rem)';
             padding = '0.6rem 0.8rem';
-            gridCols = 'repeat(auto-fit, minmax(130px, 1fr))';
+            cardWidth = '150px';
             finalWinners.classList.add('high-count');
         }
-
-        finalWinners.style.gridTemplateColumns = gridCols;
 
         winners.forEach((winner, index) => {
             const card = document.createElement('div');
@@ -284,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(nameSpan);
             card.appendChild(redrawBtn);
             card.style.padding = padding;
+            card.style.flexBasis = cardWidth;
             card.style.animationDelay = `${index * 0.1}s`;
             finalWinners.appendChild(card);
         });

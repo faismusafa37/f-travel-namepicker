@@ -670,129 +670,82 @@ input[type="number"] {
     justify-content: center;
     align-items: center;
     min-height: 15vh;
+    gap: 0.8rem;
+    animation: mainContainerFlash 6s infinite;
 }
 
 .solo-word {
-    position: absolute;
+    position: relative;
     opacity: 0;
-    transform: scale(0.5);
+    transform: translateY(20px);
     filter: blur(10px);
+    display: inline-block;
 }
 
 .word-1 {
-    animation: word1Fade 8s infinite;
+    animation: wordAppear 6s infinite forwards;
+    animation-delay: 0s;
 }
 
 .word-2 {
-    animation: word2Fade 8s infinite;
+    animation: wordAppear 6s infinite forwards;
+    animation-delay: 1s;
 }
 
 .word-3 {
-    animation: word3Fade 8s infinite;
+    animation: wordAppear 6s infinite forwards;
+    animation-delay: 2s;
 }
 
 .full-phrase {
-    opacity: 0;
-    transform: scale(0.8);
-    filter: blur(10px);
-    white-space: nowrap;
-    animation: fullLineFade 8s infinite;
+    display: none;
 }
 
-@keyframes word1Fade {
-
-    0%,
-    2% {
+@keyframes wordAppear {
+    0% {
         opacity: 0;
-        transform: scale(0.8);
-        filter: blur(5px);
-    }
-
-    5%,
-    12% {
-        opacity: 1;
-        transform: scale(1.1);
-        filter: blur(0);
-    }
-
-    15%,
-    100% {
-        opacity: 0;
-        transform: scale(1.3);
+        transform: translateY(20px);
         filter: blur(10px);
     }
-}
 
-@keyframes word2Fade {
-
-    0%,
-    15% {
-        opacity: 0;
-        transform: scale(0.8);
-        filter: blur(5px);
-    }
-
-    18%,
-    27% {
+    10%,
+    85% {
         opacity: 1;
-        transform: scale(1.1);
+        transform: translateY(0);
         filter: blur(0);
     }
 
-    30%,
+    95%,
     100% {
         opacity: 0;
-        transform: scale(1.3);
-        filter: blur(10px);
+        transform: translateY(-20px);
+        filter: blur(5px);
     }
 }
 
-@keyframes word3Fade {
+@keyframes mainContainerFlash {
 
     0%,
-    30% {
-        opacity: 0;
-        transform: scale(0.8);
-        filter: blur(5px);
+    50% {
+        filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
 
-    33%,
-    42% {
-        opacity: 1;
-        transform: scale(1.1);
-        filter: blur(0);
+    55% {
+        filter: brightness(2) drop-shadow(0 0 20px white);
     }
 
-    45%,
+    60%,
+    85% {
+        filter: brightness(1.2) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+
+    95%,
     100% {
-        opacity: 0;
-        transform: scale(1.3);
-        filter: blur(10px);
+        filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
 }
 
-@keyframes fullLineFade {
-
-    0%,
-    45% {
-        opacity: 0;
-        transform: scale(0.9);
-        filter: blur(5px);
-    }
-
-    50%,
-    95% {
-        opacity: 1;
-        transform: scale(1);
-        filter: blur(0);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(1.05);
-        filter: blur(5px);
-    }
-}
+/* Removed old keyframes */
 
 .initial-screen.hidden {
     opacity: 0;
@@ -936,8 +889,9 @@ input[type="number"] {
 }
 
 .final-winners {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1.5rem;
     width: 100%;
     flex: 1;

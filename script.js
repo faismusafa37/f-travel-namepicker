@@ -189,10 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 clearInterval(flickerTimer);
-                dice.classList.remove('shaking');
-                isShuffling = false;
-
-                if (shuffleSound) shuffleSound.stop();
 
                 // Select winners and eliminate from pool
                 const winners = [];
@@ -201,6 +197,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     const idx = Math.floor(Math.random() * poolNames.length);
                     winners.push(poolNames.splice(idx, 1)[0]);
                 }
+
+                // Show the winner on dice faces (if multiple, show first)
+                if (winners.length > 0) {
+                    faces.forEach(face => {
+                        face.innerText = winners[0];
+                    });
+                }
+
+                dice.classList.remove('shaking');
+                isShuffling = false;
+
+                if (shuffleSound) shuffleSound.stop();
 
                 // Update textarea to reflect eliminated names
                 nameListInput.value = poolNames.join('\n');

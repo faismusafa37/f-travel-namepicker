@@ -671,7 +671,7 @@ input[type="number"] {
     align-items: center;
     min-height: 15vh;
     gap: 0.8rem;
-    animation: mainContainerFlash 6s infinite;
+    animation: mainContainerFlash 10s infinite;
 }
 
 .solo-word {
@@ -683,18 +683,18 @@ input[type="number"] {
 }
 
 .word-1 {
-    animation: wordAppear 6s infinite forwards;
+    animation: wordAppear 10s infinite forwards;
     animation-delay: 0s;
 }
 
 .word-2 {
-    animation: wordAppear 6s infinite forwards;
-    animation-delay: 1s;
+    animation: wordAppear 10s infinite forwards;
+    animation-delay: 0.5s;
 }
 
 .word-3 {
-    animation: wordAppear 6s infinite forwards;
-    animation-delay: 2s;
+    animation: wordAppear 10s infinite forwards;
+    animation-delay: 1s;
 }
 
 .full-phrase {
@@ -708,14 +708,14 @@ input[type="number"] {
         filter: blur(10px);
     }
 
-    10%,
-    85% {
+    5%,
+    80% {
         opacity: 1;
         transform: translateY(0);
         filter: blur(0);
     }
 
-    95%,
+    90%,
     100% {
         opacity: 0;
         transform: translateY(-20px);
@@ -726,20 +726,20 @@ input[type="number"] {
 @keyframes mainContainerFlash {
 
     0%,
-    50% {
+    15% {
         filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
 
-    55% {
-        filter: brightness(2) drop-shadow(0 0 20px white);
+    20% {
+        filter: brightness(2) drop-shadow(0 0 30px white);
     }
 
-    60%,
-    85% {
-        filter: brightness(1.2) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    25%,
+    80% {
+        filter: brightness(1.2) drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
     }
 
-    95%,
+    90%,
     100% {
         filter: brightness(1) drop-shadow(0 0 0 transparent);
     }
@@ -858,8 +858,9 @@ input[type="number"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 5000;
     padding: 1.5rem;
+    pointer-events: auto;
 }
 
 .hidden {
@@ -1005,6 +1006,9 @@ input[type="number"] {
     gap: 15px;
     align-items: center;
     flex-shrink: 0;
+    position: relative;
+    z-index: 5001;
+    pointer-events: auto;
 }
 
 .result-actions .primary-btn {
@@ -1025,6 +1029,9 @@ input[type="number"] {
     flex-shrink: 0;
     text-transform: uppercase;
     letter-spacing: 2px;
+    z-index: 5002;
+    position: relative;
+    pointer-events: auto !important;
 }
 
 .reset-btn:hover {

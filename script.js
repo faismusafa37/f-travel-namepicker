@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startDiceShake(poolNames, pickCount);
     });
 
-    toggleSettings.addEventListener('click', () => {
+    toggleSettings?.addEventListener('click', () => {
         settingsCard.classList.toggle('collapsed');
     });
 
@@ -296,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             finalWinners.appendChild(card);
         });
 
+        diceContainer?.classList.add('hidden');
         resultOverlay.classList.remove('hidden');
     }
 });

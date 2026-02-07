@@ -190,11 +190,17 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 clearInterval(flickerTimer);
 
-                // Select winners and eliminate from pool
+                // Select winners using Crypto Random for fairness
                 const winners = [];
                 for (let i = 0; i < pickCount; i++) {
                     if (poolNames.length === 0) break;
-                    const idx = Math.floor(Math.random() * poolNames.length);
+
+                    // Secure Random Index Selection
+                    const array = new Uint32Array(1);
+                    window.crypto.getRandomValues(array);
+                    const randomValue = array[0] / (0xffffffff + 1);
+                    const idx = Math.floor(randomValue * poolNames.length);
+
                     winners.push(poolNames.splice(idx, 1)[0]);
                 }
 
@@ -203,6 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     faces.forEach(face => {
                         face.innerText = winners[0];
                     });
+                } else {
+                    faces.forEach(face => {
+                        face.innerText = "Done!";
+                    });
                 }
 
                 dice.classList.remove('shaking');
@@ -210,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (shuffleSound) shuffleSound.stop();
 
-                // Update textarea to reflect eliminated names
+                // Update textarea and pool immediately to reflect eliminated names
                 nameListInput.value = poolNames.join('\n');
 
                 // Show result after a short dramatic pause
